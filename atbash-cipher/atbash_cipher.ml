@@ -8,13 +8,10 @@ let encodec c =
 
 let chunk size str =
   let len = String.length str in
-  let buf = Buffer.create (len + (len / 5) + 1) in
+  let buf = Buffer.create (len + (len / size) + 1) in
   String.foldi str ~init:buf ~f:(fun idx acc c ->
-      let _ =
-        if idx <> 0 && Int.rem idx size = 0 then
-          Buffer.add_string acc (" " ^ Char.to_string c)
-        else Buffer.add_char acc c
-      in
+      if idx <> 0 && Int.rem idx size = 0 then Buffer.add_char acc ' ';
+      Buffer.add_char acc c;
       acc)
   |> Buffer.contents
 
@@ -22,10 +19,9 @@ let encodes str =
   let len = String.length str in
   let buf = Buffer.create len in
   String.fold str ~init:buf ~f:(fun acc c ->
-      if Char.is_alphanum c then (
+      if Char.is_alphanum c then
         Char.lowercase c |> encodec |> Buffer.add_char acc;
-        acc)
-      else acc)
+      acc)
   |> Buffer.contents
 
 let encode ?block_size s =
