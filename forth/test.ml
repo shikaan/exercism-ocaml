@@ -162,7 +162,7 @@ let () =
       drop_tests;
       swap_tests;
       over_tests;
-      (* user_defined_words_tests; *)
-      (* case_insensitivity_tests; *)
+      user_defined_words_tests;
+      case_insensitivity_tests;
     ]
   )
